@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.16)
+project(robocup_description)
+
+find_package(ament_cmake REQUIRED)
+find_package(gz_plugin_vendor REQUIRED)
+find_package(gz_sim_vendor REQUIRED)
+find_package(gz-plugin REQUIRED COMPONENTS register)
+find_package(gz-sim REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
+
+add_library(robocup_wheel_commands SHARED src/wheel_commands.cpp)
+target_compile_features(robocup_wheel_commands PRIVATE cxx_std_17)
+target_compile_options(robocup_wheel_commands PRIVATE -Wall -Wextra -Wpedantic)
+ament_target_dependencies(robocup_wheel_commands rclcpp sensor_msgs)
+target_link_libraries(robocup_wheel_commands gz-plugin::register gz-sim::gz-sim)
+
+install(TARGETS robocup_wheel_commands LIBRARY DESTINATION lib)
+install(DIRECTORY urdf worlds DESTINATION share/${PROJECT_NAME})
+ament_environment_hooks(env-hooks/gz_sim_system_plugin_path.dsv)
+ament_package()

@@ -1,0 +1,6 @@
+<library path="robocup_uart_hardware">
+  <class name="robocup_uart_hardware/UartSystem" type="robocup_uart_hardware::UartSystem"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>STM32 UART v2 with three wheel velocity command and position/velocity state interfaces.</description>
+  </class>
+</library>

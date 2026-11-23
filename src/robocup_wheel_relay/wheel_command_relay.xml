@@ -1,0 +1,7 @@
+<library path="wheel_command_relay">
+  <class name="robocup_wheel_relay/WheelCommandRelay"
+         type="robocup_wheel_relay::WheelCommandRelay"
+         base_class_type="controller_interface::ControllerInterface">
+    <description>Forward named Gazebo wheel velocity targets to the UART system.</description>
+  </class>
+</library>

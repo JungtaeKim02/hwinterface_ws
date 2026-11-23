@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 3.16)
+project(robocup_wheel_relay)
+
+find_package(ament_cmake REQUIRED)
+find_package(controller_interface REQUIRED)
+find_package(hardware_interface REQUIRED)
+find_package(pluginlib REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_lifecycle REQUIRED)
+find_package(realtime_tools REQUIRED)
+find_package(sensor_msgs REQUIRED)
+
+add_library(wheel_command_relay SHARED src/wheel_command_relay.cpp)
+target_compile_features(wheel_command_relay PRIVATE cxx_std_17)
+target_compile_options(wheel_command_relay PRIVATE -Wall -Wextra -Wpedantic)
+ament_target_dependencies(wheel_command_relay controller_interface hardware_interface pluginlib
+  rclcpp rclcpp_lifecycle realtime_tools sensor_msgs)
+pluginlib_export_plugin_description_file(controller_interface wheel_command_relay.xml)
+install(TARGETS wheel_command_relay LIBRARY DESTINATION lib)
+ament_package()

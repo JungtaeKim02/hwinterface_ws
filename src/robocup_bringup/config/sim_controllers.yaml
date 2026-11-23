@@ -1,0 +1,22 @@
+controller_manager:
+  ros__parameters:
+    use_sim_time: true
+    update_rate: 100
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    omni_drive:
+      type: omni_wheel_drive_controller/OmniWheelDriveController
+
+omni_drive:
+  ros__parameters:
+    use_sim_time: true
+    wheel_names: [wheel_0_joint, wheel_1_joint, wheel_2_joint]
+    wheel_offset: 0.0
+    wheel_radius: 0.1015
+    robot_radius: 0.2768
+    open_loop: false
+    position_feedback: false
+    cmd_vel_timeout: 0.25
+    base_frame_id: base_link
+    odom_frame_id: odom
+    enable_odom_tf: true

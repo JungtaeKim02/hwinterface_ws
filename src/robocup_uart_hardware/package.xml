@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>robocup_uart_hardware</name>
+  <version>0.1.0</version>
+  <description>ROS 2 Control system interface for the RoboCup STM32 UART v2 wheel protocol.</description>
+  <maintainer email="robocup@example.org">RoboCup team</maintainer>
+  <license>UNLICENSED</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>diagnostic_msgs</depend>
+  <depend>hardware_interface</depend>
+  <depend>pluginlib</depend>
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

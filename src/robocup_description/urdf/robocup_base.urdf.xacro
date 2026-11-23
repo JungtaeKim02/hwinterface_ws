@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<robot name="robocup_base"
+       xmlns:xacro="http://www.ros.org/wiki/xacro"
+       xmlns:gz="http://gazebosim.org/schemas">
+  <xacro:arg name="controllers_file" default=""/>
+
+  <xacro:property name="robot_radius" value="0.2768"/>
+  <xacro:property name="wheel_radius" value="0.1015"/>
+  <xacro:property name="wheel_width" value="0.040"/>
+  <xacro:property name="wheel_mass" value="2.5"/>
+  <xacro:property name="body_radius" value="0.280"/>
+  <xacro:property name="body_height" value="0.120"/>
+  <xacro:property name="body_center_z" value="0.173"/>
+  <xacro:property name="body_mass" value="${61.0 - 3.0 * wheel_mass}"/>
+
+  <material name="chassis"><color rgba="0.06 0.19 0.32 1"/></material>
+  <material name="forward_marker"><color rgba="1 0.52 0.10 1"/></material>
+  <material name="rubber"><color rgba="0.07 0.08 0.09 1"/></material>
+  <material name="hub"><color rgba="0.62 0.65 0.69 1"/></material>
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0 0 ${body_center_z}"/>
+      <mass value="${body_mass}"/>
+      <inertia
+        ixx="${body_mass * (3 * body_radius**2 + body_height**2) / 12}" ixy="0" ixz="0"
+        iyy="${body_mass * (3 * body_radius**2 + body_height**2) / 12}" iyz="0"
+        izz="${body_mass * body_radius**2 / 2}"/>
+    </inertial>
+    <visual name="body">
+      <origin xyz="0 0 ${body_center_z}"/>
+      <geometry><cylinder radius="${body_radius}" length="${body_height}"/></geometry>
+      <material name="chassis"/>
+    </visual>
+    <visual name="forward_marker">
+      <origin xyz="0.19 0 ${body_center_z + body_height/2 + 0.005}"/>
+      <geometry><box size="0.12 0.04 0.01"/></geometry>
+      <material name="forward_marker"/>
+    </visual>
+    <collision name="body">
+      <origin xyz="0 0 ${body_center_z}"/>
+      <geometry><cylinder radius="${body_radius}" length="${body_height}"/></geometry>
+    </collision>
+  </link>
+
+  <xacro:macro name="wheel" params="name angle">
+    <link name="${name}_link">
+      <inertial>
+        <mass value="${wheel_mass}"/>
+        <inertia
+          ixx="${wheel_mass * wheel_radius**2 / 2}" ixy="0" ixz="0"
+          iyy="${wheel_mass * (3 * wheel_radius**2 + wheel_width**2) / 12}" iyz="0"
+          izz="${wheel_mass * (3 * wheel_radius**2 + wheel_width**2) / 12}"/>
+      </inertial>
+      <visual name="tread">
+        <origin rpy="0 ${pi/2} 0"/>
+        <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+        <material name="rubber"/>
+      </visual>
+      <visual name="outer_hub">
+        <origin xyz="${wheel_width/2} 0 0" rpy="0 ${pi/2} 0"/>
+        <geometry><cylinder radius="0.056" length="0.005"/></geometry>
+        <material name="hub"/>
+      </visual>
+      <collision name="${name}_link_tread">
+        <origin rpy="0 ${pi/2} 0"/>
+        <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+      </collision>
+    </link>
+    <joint name="${name}_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="${name}_link"/>
+      <origin xyz="${robot_radius*cos(angle)} ${robot_radius*sin(angle)} ${wheel_radius}" rpy="0 0 ${angle}"/>
+      <axis xyz="1 0 0"/>
+      <limit effort="100" velocity="20"/>
+      <dynamics damping="0.02"/>
+    </joint>
+
+    <gazebo reference="${name}_link">
+      <collision>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.01</mu>
+              <mu2>1.0</mu2>
+              <fdir1 gz:expressed_in="${name}_link">1 0 0</fdir1>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:wheel name="wheel_0" angle="0"/>
+  <xacro:wheel name="wheel_1" angle="${2*pi/3}"/>
+  <xacro:wheel name="wheel_2" angle="${4*pi/3}"/>
+
+  <xacro:macro name="velocity_interface" params="name">
+    <joint name="${name}_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+      <state_interface name="velocity"><param name="initial_value">0.0</param></state_interface>
+    </joint>
+  </xacro:macro>
+
+  <ros2_control name="GazeboBase" type="system">
+    <hardware><plugin>gz_ros2_control/GazeboSimSystem</plugin></hardware>
+    <xacro:velocity_interface name="wheel_0"/>
+    <xacro:velocity_interface name="wheel_1"/>
+    <xacro:velocity_interface name="wheel_2"/>
+  </ros2_control>
+
+  <gazebo>
+    <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>$(arg controllers_file)</parameters>
+    </plugin>
+    <plugin filename="librobocup_wheel_commands.so" name="robocup_description::WheelCommands">
+
+      <gz:system_priority>1</gz:system_priority>
+    </plugin>
+  </gazebo>
+</robot>

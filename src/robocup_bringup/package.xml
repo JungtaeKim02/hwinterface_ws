@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>robocup_bringup</name>
+  <version>0.1.0</version>
+  <description>Bring up the RoboCup omni base, Gazebo, Xbox teleoperation and optional STM32 preview.</description>
+  <maintainer email="robocup@example.org">RoboCup team</maintainer>
+  <license>UNLICENSED</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
+  <exec_depend>joy</exec_depend>
+  <exec_depend>diagnostic_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
+  <exec_depend>python3-tk</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>omni_wheel_drive_controller</exec_depend>
+  <exec_depend>robocup_description</exec_depend>
+  <exec_depend>robocup_uart_hardware</exec_depend>
+  <exec_depend>robocup_wheel_relay</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>rosgraph_msgs</exec_depend>
+  <exec_depend>teleop_twist_joy</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>robocup_wheel_relay</name>
+  <version>0.1.0</version>
+  <description>Relay Gazebo wheel velocity commands to the UART hardware with an input timeout.</description>
+  <maintainer email="robocup@example.org">RoboCup team</maintainer>
+  <license>UNLICENSED</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>controller_interface</depend>
+  <depend>hardware_interface</depend>
+  <depend>pluginlib</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_lifecycle</depend>
+  <depend>realtime_tools</depend>
+  <depend>sensor_msgs</depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

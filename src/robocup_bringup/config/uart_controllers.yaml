@@ -1,0 +1,13 @@
+/uart/controller_manager:
+  ros__parameters:
+    use_sim_time: false
+    update_rate: 100
+    hardware_components_initial_state:
+      shutdown_on_initial_state_failure: false
+    wheel_command_relay:
+      type: robocup_wheel_relay/WheelCommandRelay
+
+/uart/wheel_command_relay:
+  ros__parameters:
+    input_topic: /sim/wheel_commands
+    command_timeout: 0.12
